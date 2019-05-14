@@ -17,7 +17,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     $scope.city1City = "";
     $scope.city1Weather = "";
 
-    $scope.cityname = function(which) {
+    $scope.cityName = function(which) {
 
         var data = "";
         if(which === 1) {
@@ -33,7 +33,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         if(data.length === 5) {
             $http({
                 method: "GET",
-                url: '/api/v1/getWeather?zip=' + data
+                url: '/api/v1/getWeather?q=' + data
             }).then( function(response) {
                 if(which === 1) {
                     $scope.city1City = response.data.city;
