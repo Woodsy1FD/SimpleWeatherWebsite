@@ -34,18 +34,36 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
             method: "GET",
             url: '/api/v1/getWeather?cityName=' + data
         }).then( function(response) {
-            if(which === 1) {
-                $scope.city1City = response.data.city;
-                $scope.city1Weather = response.data.weather;
-            } else if(which === 2) {
-                $scope.city2City = response.data.city;
-                $scope.city2Weather = response.data.weather;
-            } else if(which === 3) {
-                $scope.city3City = response.data.city;
-                $scope.city3Weather = response.data.weather;
-            } else if(which === 4) {
-                $scope.city4City = response.data.city;
-                $scope.city4Weather = response.data.weather;
+            // Change UI based on response success
+            if(response.status ===  200) {
+                if (which === 1) {
+                    $scope.city1City = response.data.city;
+                    $scope.city1Weather = response.data.weather;
+                } else if (which === 2) {
+                    $scope.city2City = response.data.city;
+                    $scope.city2Weather = response.data.weather;
+                } else if (which === 3) {
+                    $scope.city3City = response.data.city;
+                    $scope.city3Weather = response.data.weather;
+                } else if (which === 4) {
+                    $scope.city4City = response.data.city;
+                    $scope.city4Weather = response.data.weather;
+                }
+            }
+            else {
+                if (which === 1) {
+                    $scope.city1City = "";
+                    $scope.city1Weather = "";
+                } else if (which === 2) {
+                    $scope.city2City = "";
+                    $scope.city2Weather = "";
+                } else if (which === 3) {
+                    $scope.city3City = "";
+                    $scope.city3Weather = "";
+                } else if (which === 4) {
+                    $scope.city4City = "";
+                    $scope.city4Weather = "";
+                }
             }
         });
     };
