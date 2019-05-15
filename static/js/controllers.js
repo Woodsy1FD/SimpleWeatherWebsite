@@ -68,13 +68,14 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         });
     };
 
-    // Setup Google Maps
-    $scope.initialise = function()
-    {
-        var map = new google.maps.Map(document.getElementById(map), {
+    // Function to initialise map
+    function initMap(){
+        // Setup Google Maps
+        $scope.map = new google.maps.Map(document.getElementById(map), {
             center: {lat: -34.397, lng: 150.644},
             zoom: 8
         });
-    };
-    //google.maps.event.addDomListener(window, 'load', $scope.initialize);
+    }
+    // Have a listener that loads the map
+    google.maps.event.addDomListener(window, 'load', initMap);
 }]);
