@@ -73,4 +73,18 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         center: {lat: -34.397, lng: 150.644},
         zoom: 8
     });
+
+    // Add a listener which places a marker where the user clicks
+    $scope.map.addListener('click', function(e) {
+        placeMarker(e.latLng);
+    });
+
+
+    function placeMarker(latLng){
+        var marker = new google.maps.Marker({
+            position: latLng,
+            map: $scope.map
+        });
+    };
+
 }]);
