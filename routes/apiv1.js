@@ -12,7 +12,7 @@ var OPENWEATHERURL = "http://api.openweathermap.org/data/2.5/weather?appid=6b7b4
 exports.getWeather = function(req, res) {
 	var cityName = req.query.cityName;
 	if( (cityName === null) || (typeof(cityName) === 'undefined') ) {
-		return res.status(400).send('zip missing');
+		return res.status(400).send('cityName missing');
 	}
     // Must include country in URL as it defaults to US
 	var aurl = OPENWEATHERURL + '&q=' + cityName + ',nz';

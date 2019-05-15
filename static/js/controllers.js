@@ -32,7 +32,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         // Pass city name to API now
         $http({
             method: "GET",
-            url: '/api/v1/getWeather?q=' + data
+            url: '/api/v1/getWeather?cityName=' + data
         }).then( function(response) {
             if(which === 1) {
                 $scope.city1City = response.data.city;
