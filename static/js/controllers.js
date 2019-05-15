@@ -85,6 +85,6 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
             position: latLng,
             map: $scope.map
         });
-    };
+    }
 
 }]);
