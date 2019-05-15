@@ -69,8 +69,12 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     };
 
     // Setup Google Maps
-    $scope.map = new Map(document.getElementById(map), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 8
-    });
+    $scope.initialise = function()
+    {
+        var map = new google.maps.Map(document.getElementById(map), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', $scope.initialize);
 }]);
