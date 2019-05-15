@@ -76,5 +76,5 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
             zoom: 8
         });
     };
-    google.maps.event.addDomListener(window, 'load', $scope.initialize);
+    //google.maps.event.addDomListener(window, 'load', $scope.initialize);
 }]);
