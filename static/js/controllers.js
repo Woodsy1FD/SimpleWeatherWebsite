@@ -94,10 +94,9 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
             $scope.city4City = "";
             $scope.city4Weather = "";
             $scope.city4m = "";
-
-            // Add the new marker to the list
-            markers.push(marker);
         }
+        // Add the new marker to the list
+        markers.push(marker);
     }
 
     // Function to get city name from a marker position on the map
