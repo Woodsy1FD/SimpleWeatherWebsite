@@ -86,7 +86,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     function placeMarkerAndGetCity(latLng){
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'location': latLng}, function(results, status) {
-            if (status === 'OK'){
+            if (status === 'OK') {
                 // Place marker
                 var marker = new google.maps.Marker({
                     position: latLng,
@@ -96,14 +96,52 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 // Find the city name from returned components
                 var infoWindow = new google.maps.InfoWindow();
                 var city = "";
-                results[0].address_components.forEach(function(currentValue){
-                    if(currentValue.types[0] === "locality"){
+                results[0].address_components.forEach(function (currentValue) {
+                    if (currentValue.types[0] === "locality") {
                         city = currentValue.long_name;
                     }
                 });
                 // Show result in an info window
                 infoWindow.setContent(city);
                 infoWindow.open($scope.map, marker);
+
+                // Now set city name in list of names
+                var which = 0;
+                // Find next empty city field OR override first field if none empty
+                if ($scope.city2m === "") {
+                    which = 2;
+                } else if ($scope.city3m === "") {
+                    which = 3;
+                } else if ($scope.city4m === "") {
+                    which = 4;
+                } else {
+                    // Override first value in list
+                    which = 1;
+                }
+
+                // Pass city name to API now
+                $http({
+                    method: "GET",
+                    url: '/api/v1/getWeather?cityName=' + city
+                }).then(function (response) {
+                        // Change UI based on response success
+                        if (response.status === 200) {
+                            if (which === 1) {
+                                $scope.city1City = response.data.city;
+                                $scope.city1Weather = response.data.weather;
+                            } else if (which === 2) {
+                                $scope.city2City = response.data.city;
+                                $scope.city2Weather = response.data.weather;
+                            } else if (which === 3) {
+                                $scope.city3City = response.data.city;
+                                $scope.city3Weather = response.data.weather;
+                            } else if (which === 4) {
+                                $scope.city4City = response.data.city;
+                                $scope.city4Weather = response.data.weather;
+                            }
+                        }
+                    }
+                );
             }
         });
     }
@@ -111,16 +149,20 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     // Function to create a marker on the map for a city given by an input field
     function codeAndMarkCity(address){
         var geocoder = new google.maps.Geocoder();
+        var city = address;
         // Append NZ to address to get the correct result from google API
         address += ",nz";
         geocoder.geocode({'address': address}, function(results, status){
             if (status === 'OK'){
+                var infoWindow = new google.maps.InfoWindow();
                 var marker = new google.maps.Marker({
                     map: $scope.map,
                     position: results[0].geometry.location
                 });
+                // Show city name in an info window
+                infoWindow.setContent(city);
+                infoWindow.open($scope.map, marker);
             }
-            else alert("Geocode failed");
         });
     }
 
