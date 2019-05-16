@@ -70,6 +70,9 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         });
     };
 
+    // List of markers to hold
+    var markers = [];
+
     // Setup Google Maps
     $scope.map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: -36.85, lng: 174.76},
@@ -80,6 +83,17 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     $scope.map.addListener('click', function(e) {
         placeMarkerAndGetCity(e.latLng);
     });
+
+    // If marker list greater than 4, remove the first item from map and list
+    function maintainMarkers(){
+        if(markers.length > 4){
+            markers[0].setMap(null);
+            markers.shift();
+            $scope.city1City = "";
+            $scope.city1Weather = "";
+        }
+    }
+
 
 
     // Function to get city name from a marker position on the map
@@ -92,6 +106,11 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     position: latLng,
                     map: $scope.map
                 });
+                // Add marker to list of markers
+                markers.push(marker);
+                // Ensure still keeping max of 4 markers
+                maintainMarkers();
+
 
                 // Find the city name from returned components
                 var infoWindow = new google.maps.InfoWindow();
@@ -108,15 +127,11 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 // Now set city name in list of names
                 var which = 0;
                 // Find next empty city field OR override first field if none empty
-                if ($scope.city2m === "" || $scope.city2m == null) {
-                    // Base case: Nothing filled out yet
-                    if($scope.city1m == null)
-                    {
-                        which = 1;
-                    }
-                    else{
-                        which = 2;
-                    }
+                if($scope.city1m == null) {
+                    which = 1;
+                }
+                else if ($scope.city2m === "" || $scope.city2m == null) {
+                    which = 2;
                 } else if ($scope.city3m === "" || $scope.city3m == null) {
                     which = 3;
                 } else if ($scope.city4m === "" || $scope.city4m == null) {
@@ -170,6 +185,11 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     map: $scope.map,
                     position: results[0].geometry.location
                 });
+                // Add marker to list of markers
+                markers.push(marker);
+                // maintain list of markers
+                maintainMarkers();
+
                 // Show city name in an info window
                 infoWindow.setContent(city);
                 infoWindow.open($scope.map, marker);
