@@ -72,7 +72,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
 
     // Setup Google Maps
     $scope.map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
+        center: {lat: -36.85, lng: 174.76},
         zoom: 8
     });
 
@@ -109,7 +109,14 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 var which = 0;
                 // Find next empty city field OR override first field if none empty
                 if ($scope.city2m === "" || $scope.city2m == null) {
-                    which = 2;
+                    // Base case: Nothing filled out yet
+                    if($scope.city1m == null)
+                    {
+                        which = 1;
+                    }
+                    else{
+                        which = 2;
+                    }
                 } else if ($scope.city3m === "" || $scope.city3m == null) {
                     which = 3;
                 } else if ($scope.city4m === "" || $scope.city4m == null) {
@@ -132,16 +139,13 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                                 $scope.city1Weather = response.data.weather;
                             } else if (which === 2){
                                 $scope.city2m = response.data.city;
-                                //document.getElementById('city2').value = response.data.city;
                                 $scope.city2City = response.data.city;
                                 $scope.city2Weather = response.data.weather;
                             } else if (which === 3) {
-                                // document.getElementById('city3').value = response.data.city;
                                 $scope.city3m = response.data.city;
                                 $scope.city3City = response.data.city;
                                 $scope.city3Weather = response.data.weather;
                             } else if (which === 4) {
-                                //document.getElementById('city4').value = response.data.city;
                                 $scope.city4m = response.data.city;
                                 $scope.city4City = response.data.city;
                                 $scope.city4Weather = response.data.weather;
