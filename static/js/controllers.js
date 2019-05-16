@@ -50,7 +50,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     $scope.city4Weather = response.data.weather;
                 }
                 // Now draw the marker on the map
-                codeAndMarkCity(response.data.city);
+                codeAndMarkCity(response.data.city, which);
             }
             else {
                 if (which === 1) {
@@ -85,18 +85,31 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     });
 
     // If marker list greater than 4, remove the last item from map and list
-    function maintainMarkers(marker){
-        if(markers.length === 4){
-            markers[3].setMap(null);
-            markers.pop();
+    function maintainMarkers(marker, which){
+        switch(arguments.length) {
+            case 1:
+                if(markers.length === 4)
+                {
+                    markers[3].setMap(null);
+                    markers.pop();
 
-            // Remove the last item from the UI
-            $scope.city4City = "";
-            $scope.city4Weather = "";
-            $scope.city4m = "";
+                    // Remove the last item from the UI
+                    $scope.city4City = "";
+                    $scope.city4Weather = "";
+                    $scope.city4m = "";
+                }
+                // Add the new marker to the list
+                markers.push(marker);
+                break;
+            case 2:
+                if (markers.length == 4){
+                    markers[which].setMap(null);
+                    // Remove the item which has been changed
+                    markers.splice(which - 1, 1);
+                }
+                markers.push(marker);
+                break;
         }
-        // Add the new marker to the list
-        markers.push(marker);
     }
 
     // Function to get city name from a marker position on the map
@@ -173,7 +186,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     }
 
     // Function to create a marker on the map for a city given by an input field
-    function codeAndMarkCity(address){
+    function codeAndMarkCity(address, which){
         var geocoder = new google.maps.Geocoder();
         var city = address;
         // Append NZ to address to get the correct result from google API
@@ -187,7 +200,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 });
 
                 // maintain list of markers
-                maintainMarkers(marker);
+                maintainMarkers(marker, which);
 
                 // Show city name in an info window
                 infoWindow.setContent(city);
