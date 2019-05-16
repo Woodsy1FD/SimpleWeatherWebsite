@@ -49,6 +49,8 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     $scope.city4City = response.data.city;
                     $scope.city4Weather = response.data.weather;
                 }
+                // Now draw the marker on the map
+                codeAndMarkCity(response.data.city);
             }
             else {
                 if (which === 1) {
@@ -83,7 +85,6 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     // Function to get city name from a marker position on the map
     function placeMarkerAndGetCity(latLng){
         var geocoder = new google.maps.Geocoder();
-        var infoWindow = new google.maps.InfoWindow();
         geocoder.geocode({'location': latLng}, function(results, status) {
             if (status === 'OK'){
                 // Place marker
@@ -93,6 +94,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 });
 
                 // Find the city name from returned components
+                var infoWindow = new google.maps.InfoWindow();
                 var city = "";
                 infoWindow.setContent(results[0].address_components.forEach(function(currentValue){
                     if(currentValue.types[0] === "locality"){
