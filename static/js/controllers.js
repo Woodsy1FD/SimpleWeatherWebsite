@@ -87,7 +87,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     // If marker list greater than 4, remove the last item from map and list
     function maintainMarkers(){
         if(markers.length > 4){
-            markers[0].setMap(null);
+            markers[3].setMap(null);
             markers.pop();
             // Remove the last item from the UI
             $scope.city4City = "";
