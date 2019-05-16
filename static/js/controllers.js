@@ -85,18 +85,20 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     });
 
     // If marker list greater than 4, remove the last item from map and list
-    function maintainMarkers(){
+    function maintainMarkers(marker){
         if(markers.length > 4){
             markers[3].setMap(null);
             markers.pop();
+
             // Remove the last item from the UI
             $scope.city4City = "";
             $scope.city4Weather = "";
             $scope.city4m = "";
+
+            // Add the new marker to the list
+            markers.push(marker);
         }
     }
-
-
 
     // Function to get city name from a marker position on the map
     function placeMarkerAndGetCity(latLng){
@@ -108,11 +110,8 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     position: latLng,
                     map: $scope.map
                 });
-                // Add marker to list of markers
-                markers.push(marker);
                 // Ensure still keeping max of 4 markers
-                maintainMarkers();
-
+                maintainMarkers(marker);
 
                 // Find the city name from returned components
                 var infoWindow = new google.maps.InfoWindow();
@@ -187,10 +186,9 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     map: $scope.map,
                     position: results[0].geometry.location
                 });
-                // Add marker to list of markers
-                markers.push(marker);
+
                 // maintain list of markers
-                maintainMarkers();
+                maintainMarkers(marker);
 
                 // Show city name in an info window
                 infoWindow.setContent(city);
