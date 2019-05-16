@@ -96,13 +96,13 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 // Find the city name from returned components
                 var infoWindow = new google.maps.InfoWindow();
                 var city = "";
-                infoWindow.setContent(results[0].address_components.forEach(function(currentValue){
+                results[0].address_components.forEach(function(currentValue){
                     if(currentValue.types[0] === "locality"){
                         city = currentValue.long_name;
                     }
-                }));
-
+                });
                 // Show result in an info window
+                infoWindow.setContent(city);
                 infoWindow.open($scope.map, marker);
             }
         });
@@ -114,7 +114,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         // Append NZ to address to get the correct result from google API
         address += ",nz";
         geocoder.geocode({'address': address}, function(results, status){
-            if (status === google.maps.status.OK){
+            if (status === 'OK'){
                 var marker = new google.maps.Marker({
                     map: $scope.map,
                     position: results[0].geometry.location
