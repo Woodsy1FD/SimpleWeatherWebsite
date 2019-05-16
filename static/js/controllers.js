@@ -84,13 +84,15 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         placeMarkerAndGetCity(e.latLng);
     });
 
-    // If marker list greater than 4, remove the first item from map and list
+    // If marker list greater than 4, remove the last item from map and list
     function maintainMarkers(){
         if(markers.length > 4){
             markers[0].setMap(null);
-            markers.shift();
-            $scope.city1City = "";
-            $scope.city1Weather = "";
+            markers.pop();
+            // Remove the last item from the UI
+            $scope.city4City = "";
+            $scope.city4Weather = "";
+            $scope.city4m = "";
         }
     }
 
