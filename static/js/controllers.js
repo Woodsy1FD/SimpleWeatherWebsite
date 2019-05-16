@@ -76,14 +76,51 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
 
     // Add a listener which places a marker where the user clicks
     $scope.map.addListener('click', function(e) {
-        placeMarker(e.latLng);
+        placeMarkerAndGetCity(e.latLng);
     });
 
 
-    function placeMarker(latLng){
-        var marker = new google.maps.Marker({
-            position: latLng,
-            map: $scope.map
+    // Function to get city name from a marker position on the map
+    function placeMarkerAndGetCity(latLng){
+        var geocoder = new google.maps.Geocoder;
+        var infoWindow = new google.maps.InfoWindow;
+        geocoder.geocode({'location': latLng}, function(results, status) {
+            if (status === 'OK'){;
+                // Place marker
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: $scope.map
+                });
+
+                // Find the city name from returned components
+                var city = "";
+                infoWindow.setContent(results[0].address_components.forEach(function(currentValue){
+                    if(currentValue.types[0] === "locality"){
+                        city = currentValue.long_name;
+                    }
+                }));
+
+                // Show result in an info window
+                infoWindow.open($scope.map, marker);
+            }
+        })
+
+
+    }
+
+    // Function to create a marker on the map for a city given by an input field
+    function codeAndMarkCity(address){
+        var geocoder = new google.maps.Geocoder;
+        // Append NZ to address to get the correct result from google API
+        address += ",nz";
+        geocoder.geocode({'address': address}, function(results, status){
+            if (status === google.maps.status.OK){
+                var marker = new google.maps.Marker({
+                    map: $scope.map,
+                    position: results[0].geometry.location
+                });
+            }
+            else alert("Geocode failed");
         });
     }
 
