@@ -2,7 +2,7 @@
 var ConsoleModule = angular.module('ConsoleModule', ['ngRoute']);
 
 ConsoleModule.config(['$routeProvider', '$locationProvider','$sceDelegateProvider', '$httpProvider',
-    function ($routeProvider, $locationProvider, $sceDelegateProvider, $httpProvider) {
+    function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: '/partials/Byzip.html',
         controller: 'wcontroller',
@@ -11,7 +11,7 @@ ConsoleModule.config(['$routeProvider', '$locationProvider','$sceDelegateProvide
 }]);
 
 ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$timeout', '$sce',
-    function($scope, $http, $routeParams, $timeout, $sce) {
+    function($scope, $http) {
 
     $scope.somemessage = "Some weather";
     $scope.city1City = "";
@@ -85,7 +85,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         var geocoder = new google.maps.Geocoder;
         var infoWindow = new google.maps.InfoWindow;
         geocoder.geocode({'location': latLng}, function(results, status) {
-            if (status === 'OK'){;
+            if (status === 'OK'){
                 // Place marker
                 var marker = new google.maps.Marker({
                     position: latLng,
@@ -103,9 +103,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 // Show result in an info window
                 infoWindow.open($scope.map, marker);
             }
-        })
-
-
+        });
     }
 
     // Function to create a marker on the map for a city given by an input field
