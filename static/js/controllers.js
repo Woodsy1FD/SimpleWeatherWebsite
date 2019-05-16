@@ -103,7 +103,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 break;
             case 2:
                 if (markers.length == 4){
-                    markers[which].setMap(null);
+                    markers[which - 1].setMap(null);
                     // Remove the item which has been changed
                     markers.splice(which - 1, 1, marker);
                 }
