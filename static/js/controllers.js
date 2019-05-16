@@ -82,8 +82,8 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
 
     // Function to get city name from a marker position on the map
     function placeMarkerAndGetCity(latLng){
-        var geocoder = new google.maps.Geocoder;
-        var infoWindow = new google.maps.InfoWindow;
+        var geocoder = new google.maps.Geocoder();
+        var infoWindow = new google.maps.InfoWindow();
         geocoder.geocode({'location': latLng}, function(results, status) {
             if (status === 'OK'){
                 // Place marker
@@ -108,7 +108,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
 
     // Function to create a marker on the map for a city given by an input field
     function codeAndMarkCity(address){
-        var geocoder = new google.maps.Geocoder;
+        var geocoder = new google.maps.Geocoder();
         // Append NZ to address to get the correct result from google API
         address += ",nz";
         geocoder.geocode({'address': address}, function(results, status){
