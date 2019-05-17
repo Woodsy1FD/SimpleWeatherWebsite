@@ -190,6 +190,38 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         });
     }
 
+    // get cities list from db2
+    function getCitiesList() {
+        var api_url = "https://dashdb-txn-sbox-yp-dal09-03.services.dal.bluemix.net" + "/dbapi/v3";
+        var userInfo = {
+            "userid": "dtf01766",
+            "password": "8scpj0r3r8lnk+h9"
+        };
+        var service = "/auth/tokens";
+        var token;
+        var cities;
+
+        // Call db2 to get access token
+        $http.post(api_url + service, userInfo).then(function (response) {
+            if (response.status === 200) {
+                token = response.data.token;
+                alert("Successfully got access token");
+                $http({
+                    method: 'GET',
+                    url: '/api/v1/getCitiesListJob?token=' + token
+                }).then(function (response) {
+                    $http({
+                        method: 'GET',
+                        url: '/api/v1/getCitiesList?token=' + token + "&jobId=" + response.jobId
+                    }).then(function (response) {
+                        cities = response.cities;
+                    });
+                })
+            }
+        });
+        return cities;
+    }
+
     // Function to create a marker on the map for a city given by an input field
     function codeAndMarkCity(address, which){
         var geocoder = new google.maps.Geocoder();
@@ -214,56 +246,5 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         });
     }
 
-    // Big bad boy function to get the cities list from db2
-    function getCitiesList(){
-        var api_url = "https://dashdb-txn-sbox-yp-dal09-03.services.dal.bluemix.net" + "/dbapi/v3";
-        var userInfo = {
-            "userid" : "dtf01766",
-            "password" : "8scpj0r3r8lnk+h9"
-        };
-        var service = "/auth/tokens";
-        var citiesList;
 
-        // Call db2 to get access token
-        $http.post(api_url + service, userInfo).then(function(response) {
-            if (response.status === 200) {
-                alert("Successfully got access token");
-                var auth_header = {
-                    "Authorization": "Bearer " + response.data.token
-                };
-                var sql_command = {
-                    "commands": "SELECT * FROM CITIES",
-                    "limit": 4,
-                    "seperator": ";",
-                    "stop_on_error": "yes"
-                };
-                var service = "/sql_jobs";
-
-                var request = {
-                    method: "POST",
-                    url: api_url + service,
-                    headers: auth_header,
-                    data: sql_command
-                };
-                // Now send post request for sql job
-                $http(request).then(function (response) {
-                    if (response.status === 200) {
-                        alert("JOB SENT");
-                        request = {
-                            method: "GET",
-                            url: api_url + service + "/" + response.data.id,
-                            headers: auth_header
-                        };
-                        // Get the Select statement results from the db2 instance
-                        $http(request).then(function (response) {
-                            if (response.status === 200) {
-                                alert("Got job results");
-                                citiesList =  response.data.results.rows;
-                            }
-                        });
-                    }
-                }); // Lowest
-                return citiesList;
-            }});
-    }
 }]);
