@@ -108,6 +108,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     markers.splice(which - 1, 1, marker);
                 }
                 else{
+                    // Add the marker to back of the list
                     markers.push(marker);
                 }
                 break;
