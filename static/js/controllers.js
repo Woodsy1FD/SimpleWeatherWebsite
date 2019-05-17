@@ -216,7 +216,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                     }).then(function (response) {
                         cities = response.cities;
                     });
-                })
+                });
             }
         });
         return cities;
@@ -245,6 +245,4 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
             }
         });
     }
-
-
 }]);
