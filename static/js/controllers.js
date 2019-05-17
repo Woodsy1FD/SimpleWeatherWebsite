@@ -224,9 +224,9 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
 
         // Call db2 to get access token
         $http.post(api_url + service, userInfo).then( function(response) {
-            if (response.status_code === 200){
+            if (response.status === 200){
                 alert("Success");
-                return response.token;
+                return response.data.token;
             }
         });
     }
@@ -256,9 +256,9 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         };
         // Post the job to the db2 instance
         $http(request).then(function(response){
-            if(response.status_code === 200) {
+            if(response.status === 200) {
                 alert("JOB SENT");
-                jobId = response.id;
+                jobId = response.data.id;
             }
         });
 
@@ -269,8 +269,8 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         };
         // Get the Select statement results from the db2 instance
         $http(request).then(function(response){
-            if(response.status_code === 200){
-                return response.results.rows;
+            if(response.status === 200){
+                return response.data.results.rows;
             }
         });
     }
