@@ -73,7 +73,7 @@ exports.getCitiesListJob = function(req, res) {
                 return res.status(200).send(response);
             }
 			else{
-				return res.status(400).send({msg: body.cod});
+				return res.status(400).send("Failed");
 			}
 		}
 	});
