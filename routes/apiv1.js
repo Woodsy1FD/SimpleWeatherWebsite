@@ -35,8 +35,50 @@ exports.getWeather = function(req, res) {
             }
     	}
     });
+};
 
+var api_url = "https://dashdb-txn-sbox-yp-dal09-03.services.dal.bluemix.net" + "/dbapi/v3";
+
+exports.getCitiesListJob = function(req, res) {
+	var token = req.query.token;
+	if ((token === null || typeof(token) ==='undefined')){
+		return res.status(400).send('token is missing');
+	}
+	var fullUrl = api_url + "/sql_jobs";
+
+	var auth_header = {
+		"Authorization": "Bearer " + token
+	};
+
+	var sql_command = {
+		"commands": "SELECT * FROM CITIES",
+		"limit": 4,
+		"seperator": ";",
+		"stop_on_error": "yes"
+	};
+
+	request({
+		method: 'POST',
+		url: fullUrl,
+		json: true,
+		headers: auth_header,
+		data: sql_command
+	}, function (err, resp, body){
+		if (err) {
+			res.status(400).send('Failed to get cities list');
+		}
+		else{
+			if (body.cod === 200){
+				var response ={jobId: body.id};
+				return res.status(200).send(response);
+			}
+			else{
+				return res.status(400).send({msg:'Failed'});
+			}
+		}
+	});
 };
 router.get('/getWeather', exports.getWeather);
+router.get('/getCitiesListJob', exports.getCitiesListJob);
 
 exports.router = router;
