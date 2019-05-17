@@ -47,7 +47,7 @@ exports.getCitiesListJob = function(req, res) {
 	var fullUrl = api_url + "/sql_jobs";
 
 	var auth_header = {
-		"Authorization": "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTgwNzA0NjYsInVzZXJOYW1lIjoiZHRmMDE3NjYiLCJjb29raWUiOiIiLCJpc3N1ZSI6Imh0dHBzOi8vMTAuMTIwLjcyLjEwOjg4ODAvIn0.PUm2Cyfq5cNPY2lEKLRzBKEXmvL2ypMqVWEyFpdpdTQ"
+		"Authorization": "Bearer " + token
 	};
 
 	var sql_command = {
@@ -62,7 +62,7 @@ exports.getCitiesListJob = function(req, res) {
 		url: fullUrl,
 		json: true,
 		headers: auth_header,
-		body: sql_command
+		body: JSON.stringify(sql_command)
 	}, function (err, resp, body){
 		if (err) {
 			return res.status(400).send('Failed to get cities list');
