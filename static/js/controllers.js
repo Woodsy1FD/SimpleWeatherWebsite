@@ -18,7 +18,6 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     $scope.city1Weather = "";
 
     $scope.cityName = function(which) {
-
         var data = "";
         if(which === 1) {
             data = $scope.city1m;
@@ -212,4 +211,65 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
         });
     }
 
+    // Gets a new access token from the given db2 instance
+    function getNewAccessToken(){
+        var api_url = "https://dashdb-txn-sbox-yp-dal09-03.services.dal.bluemix.net" + "/dbapi/v3";
+        var userInfo = {
+            "userid" : "dtf01766",
+            "password" : "8scpj0r3r8lnk+h9"
+        };
+        var service = "/auth/tokens";
+
+        // Call db2 to get access token
+        $http.post(api_url + service, userInfo).then( function(response) {
+            if (response.status_code === 200){
+                alert("Success");
+                return response.token;
+            }
+        });
+    }
+
+    // returns an array of cities retrieved from db2 sql instance
+    function getCitiesList() {
+        var api_url = "https://dashdb-txn-sbox-yp-dal09-03.services.dal.bluemix.net" + "/dbapi/v3";
+        var token = getNewAccessToken();
+        var jobId = "";
+        var auth_header = {
+            "Authorization" : "Bearer " + token
+        };
+
+        var sql_command = {
+            "commands" : "SELECT * FROM CITIES",
+            "limit": 4,
+            "seperator" : ";",
+            "stop_on_error" : "yes"
+        };
+        var service = "/sql_jobs";
+
+        var request = {
+            method: "POST",
+            url: api_url + service,
+            headers: auth_header,
+            data: sql_command
+        };
+        // Post the job to the db2 instance
+        $http(request).then(function(response){
+            if(response.status_code === 200) {
+                alert("JOB SENT");
+                jobId = response.id;
+            }
+        });
+
+        request = {
+            method: "GET",
+            url: api_url + service + "/" + jobId,
+            headers: auth_header
+        };
+        // Get the Select statement results from the db2 instance
+        $http(request).then(function(response){
+            if(response.status_code === 200){
+                return response.results.rows;
+            }
+        })
+    }
 }]);
