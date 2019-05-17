@@ -2,12 +2,18 @@
 var ConsoleModule = angular.module('ConsoleModule', ['ngRoute']);
 
 ConsoleModule.config(['$routeProvider', '$locationProvider','$sceDelegateProvider', '$httpProvider',
-    function ($routeProvider) {
+    function ($routeProvider, $httpProvider) {
     $routeProvider.when('/', {
         templateUrl: '/partials/Byzip.html',
         controller: 'wcontroller',
         controllerAs: 'wcontroller'
     });
+    //Enable cross domain calls
+    $httpProvider.defaults.useXDomain = true;
+
+    //Remove the header containing XMLHttpRequest used to identify ajax call
+    //that would prevent CORS from working
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
 
 ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$timeout', '$sce',
