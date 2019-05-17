@@ -257,7 +257,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                         // Get the Select statement results from the db2 instance
                         $http(request).then(function (response) {
                             if (response.status === 200) {
-                                alert("Got job results")
+                                alert("Got job results");
                                 citiesList =  response.data.results.rows;
                             }
                         });
