@@ -53,7 +53,7 @@ exports.getCitiesListJob = function(req, res) {
 	var sql_command = {
 		"commands": "SELECT * FROM CITIES",
 		"limit": 4,
-		"seperator": ";",
+		"separator": ";",
 		"stop_on_error": "yes"
 	};
 
@@ -73,7 +73,7 @@ exports.getCitiesListJob = function(req, res) {
 				return res.status(200).send(response);
 			}
 			else{
-				return res.status(400).send({msg:'Failed'});
+				return res.status(400).send({msg: resp.status});
 			}
 		}
 	});
