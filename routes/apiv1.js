@@ -62,7 +62,7 @@ exports.getCitiesListJob = function(req, res) {
 		url: fullUrl,
 		json: true,
 		headers: auth_header,
-		data: sql_command
+		body: sql_command
 	}, function (err, resp, body){
 		if (err) {
 			return res.status(400).send('Failed to get cities list');
