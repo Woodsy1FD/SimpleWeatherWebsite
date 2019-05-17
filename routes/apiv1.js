@@ -65,14 +65,16 @@ exports.getCitiesListJob = function(req, res) {
 		data: sql_command
 	}, function (err, resp, body){
 		if (err) {
-			res.status(400).send('Failed to get cities list');
+			return res.status(400).send('Failed to get cities list');
 		}
 		else{
 			if (body.cod === 200){
 				var response ={jobId: body.id};
+				console.log(body);
 				return res.status(200).send(response);
 			}
 			else{
+				console.log(body);
 				return res.status(400).send({msg: resp.status});
 			}
 		}
