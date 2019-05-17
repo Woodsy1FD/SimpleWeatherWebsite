@@ -78,7 +78,37 @@ exports.getCitiesListJob = function(req, res) {
 		}
 	});
 };
+
+exports.getCitiesList = function (req, res){
+	var jobId = req.query.jobId;
+	var token = req.query.token;
+	var auth_header = {
+		"Authorization": "Bearer " + token
+	};
+	var fullUrl = api_url +"/sql_jobs/" + jobId;
+
+	request({
+		method: 'GET',
+		url: fullUrl,
+		headers: auth_header,
+		json: true,
+	}, function (err, resp, body) {
+		if (err) {
+			res.status(400).send('Failed to get cities list');
+		} else {
+			if (body.cod === 200) {
+				var response = {cities: body.results.rows};
+				return res.status(200).send(response);
+			} else {
+				return res.status(400).send({msg: 'Failed'});
+			}
+		}
+	});
+};
+
+
 router.get('/getWeather', exports.getWeather);
 router.get('/getCitiesListJob', exports.getCitiesListJob);
+router.get('/getCitiesList', exports.getCitiesList);
 
 exports.router = router;
