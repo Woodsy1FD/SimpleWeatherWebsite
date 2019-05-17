@@ -17,6 +17,8 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
     $scope.city1City = "";
     $scope.city1Weather = "";
 
+    var list = getCitiesList();
+
     $scope.cityName = function(which) {
         var data = "";
         if(which === 1) {
