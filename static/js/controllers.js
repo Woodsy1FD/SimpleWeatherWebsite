@@ -103,7 +103,7 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
                 markers.push(marker);
                 break;
             case 2:
-                if (markers.length == 4){
+                if (markers.length === 4){
                     markers[which - 1].setMap(null);
                     // Remove the item which has been changed
                     markers.splice(which - 1, 1, marker);
@@ -272,6 +272,6 @@ ConsoleModule.controller('wcontroller', ['$scope', '$http', '$routeParams', '$ti
             if(response.status_code === 200){
                 return response.results.rows;
             }
-        })
+        });
     }
 }]);
